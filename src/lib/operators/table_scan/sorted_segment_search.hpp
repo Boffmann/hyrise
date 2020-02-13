@@ -62,6 +62,14 @@ class SortedSegmentSearch {
       return;
     }
 
+    if (_is_nulls_first) {
+      _begin = std::lower_bound(it_first, it_last, false,
+                                [](const auto& segment_position, const auto& _) { return segment_position.is_null(); });
+    } else {
+      _end = std::lower_bound(it_first, it_last, true,
+                              [](const auto& segment_position, const auto& _) { return !segment_position.is_null(); });
+    }
+    /*
     using difference_type = typename std::iterator_traits<IteratorType>::difference_type;
     const difference_type segment_size = std::distance(it_first, it_last);
     difference_type step_size = 1;
@@ -83,6 +91,7 @@ class SortedSegmentSearch {
       _end = std::lower_bound(start, it_first + (segment_size - step_size / 2), true,
                               [](const auto& segment_position, const auto& _) { return !segment_position.is_null(); });
     }
+    */
   }
 
   /**
